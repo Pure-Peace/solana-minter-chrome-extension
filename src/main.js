@@ -1,12 +1,27 @@
-import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import { useBus } from './store/bus'
 
-Vue.config.productionTip = false
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+import Antd, {
+  message,
+  Modal
+} from 'ant-design-vue'
+
+import 'ant-design-vue/dist/antd.css'
+
+const app = createApp(App)
+const pinia = createPinia()
+
+app.use(pinia)
+app.use(router)
+app.use(Antd)
+
+// Globals
+app.config.globalProperties.$bus = useBus()
+app.config.globalProperties.$message = message
+app.config.globalProperties.$modal = Modal
+
+app.mount('#app')
